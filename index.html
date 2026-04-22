@@ -1,230 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Game Addiction Scale for Adolescents </title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-
-body {
-  font-family: 'Roboto', sans-serif;
-  background: #f5f7fb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  padding: 40px;
-  border-radius: 14px;
-  width: 100%;
-  max-width: 720px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-}
-
-.screen { display: none; }
-.screen.active { display: block; }
-
-h1 {
-  font-family: 'Montserrat', sans-serif;
-  text-align: center;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.box {
-  background: #f8fbff;
-  border: 1px solid #e3e8f0;
-  padding: 22px;
-  border-radius: 10px;
-  margin-bottom: 25px;
-  line-height: 1.6;
-}
-
-.center { text-align: center; }
-
-button {
-  border: none;
-  border-radius: 8px;
-  padding: 12px 22px;
-  cursor: pointer;
-  font-weight: 500;
-  font-family: 'Montserrat', sans-serif;
-  transition: all 0.2s ease;
-}
-
-.primary {
-  background: #1e40af;
-  color: white;
-}
-
-.primary:hover {
-  background: #1e3a8a;
-}
-
-.secondary {
-  background: #eef2f7;
-}
-
-.secondary:hover {
-  background: #e5e7eb;
-}
-
-.progress {
-  height: 6px;
-  background: #e5e7eb;
-  border-radius: 10px;
-  margin: 15px 0;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #1e40af;
-  width: 25%;
-}
-
-.question {
-  text-align: center;
-  font-size: 1.2rem;
-  margin: 25px 0;
-  font-weight: 500;
-}
-
-.option {
-  display: block;
-  border: 1px solid #e5e7eb;
-  padding: 14px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.option:hover {
-  background: #f1f5f9;
-}
-
-.option input { display: none; }
-
-.option input:checked + span {
-  color: #1e40af;
-  font-weight: 600;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 25px;
-}
-
-.result {
-  text-align: center;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 25px;
-}
-
-.table th, .table td {
-  border: 1px solid #e5e7eb;
-  padding: 12px;
-  text-align: center;
-}
-
-.table th {
-  background: #f1f5f9;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.footer {
-  margin-top: 30px;
-  font-size: 0.85rem;
-  color: #6b7280;
-  text-align: center;
-}
-
-</style>
-</head>
-
-<body>
-
-<div class="card">
-
-<div id="landing" class="screen active">
-  <h1>Escala Breve de Uso Problemático y Dependencia del Smartphone</h1>
-
-  <div class="box">
-    <p style="text-align: center;">
-    A continuación se presentan una serie de afirmaciones sobre tu uso de videojuegos.<br>
-    Indicá en qué medida te ha pasado lo que afirman cada una, seleccionando la opción que mejor represente tu experiencia personal. <br>
-    No existen respuestas correctas o incorrectas.</p>
-  </div>
-
-  <div class="center">
-    <button class="primary" onclick="start()">Hacer evaluación</button>
-  </div>
-</div>
-
-<div id="quiz" class="screen">
-
-  <div id="progressText"></div>
-  <div class="progress">
-    <div class="progress-fill" id="progressFill"></div>
-  </div>
-
-  <div id="question" class="question"></div>
-  <div id="options"></div>
-
-  <div class="nav">
-    <button class="secondary" onclick="prev()">Atrás</button>
-    <button class="primary" onclick="next()">Siguiente</button>
-  </div>
-
-</div>
-
-<div id="result" class="screen result">
-  <h2 id="score"></h2>
-  <h3 id="level"></h3>
-  <p id="text"></p>
-
-  <table class="table">
-    <tr>
-      <th>Puntaje</th>
-      <th>Clasificación</th>
-    </tr>
-    <tr><td>21 – 42 </td><td>Usuario casual</td></tr>
-    <tr><td>43 – 63</td><td>Usuario regular</td></tr>
-    <tr><td>64 – 84</td><td>Usuario en riesgo</td></tr>
-    <tr><td>85 – 105</td><td>Usuario problemático</td></tr>
-  </table>
-
-  <br>
-  <button class="primary" onclick="restart()">Volver al inicio</button>
-</div>
-
-<div class="footer">
-Caino, P. G., & Resett, S. A. (2024). Adicción a los videojuegos, calidad de sueño y malestar psicológico en adolescentes y jóvenes adultos. Revista Argentina de Ciencias del Comportamiento (RACC), 16(3), 86-95.
-</div>
-
-</div>
-
 <script>
-
 const questions = [
 "¿Pensaste en jugar videojuegos todo el día?",
 "¿Pasas mucho tiempo libre jugando videojuegos?",
-" ¿Te has sentido adicto a algún videojuego?",
+"¿Te has sentido adicto a algún videojuego?",
 "¿Jugaste más tiempo del que pensabas?",
 "¿Pasaste cada vez más tiempo jugando videojuegos?",
 "¿No pudiste parar de jugar una vez que empezaste?",
@@ -243,8 +21,6 @@ const questions = [
 "¿Tu tiempo jugando videojuegos te trajo problemas de sueño?",
 "¿Has descuidado otras actividades importantes (por ejemplo, escuela, trabajo, deportes) por jugar videojuegos?",
 "¿Te has sentido mal por jugar por un tiempo prolongado?"
-  
-  
 ];
 
 const options = [
@@ -256,44 +32,49 @@ const options = [
 ];
 
 let step = 0;
-let answers = [null,null,null,null];
+let answers = new Array(questions.length).fill(null);
 
 function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
 function start(){
-  step=0;
+  step = 0;
+  answers = new Array(questions.length).fill(null);
   show("quiz");
   load();
 }
 
 function load(){
   document.getElementById("question").innerText = questions[step];
-  document.getElementById("progressText").innerText = `Pregunta ${step+1} de 4`;
-  document.getElementById("progressFill").style.width = `${(step+1)*25}%`;
+  document.getElementById("progressText").innerText = `Pregunta ${step + 1} de ${questions.length}`;
+  document.getElementById("progressFill").style.width = `${((step + 1) / questions.length) * 100}%`;
 
-  let html="";
-  options.forEach((opt,i)=>{
-    html+=`
-    <label class="option">
-      <input type="radio" name="q" value="${i+1}" ${answers[step]==i+1?"checked":""}>
-      <span>${opt}</span>
-    </label>`;
+  let html = "";
+  options.forEach((opt, i) => {
+    html += `
+      <label class="option">
+        <input type="radio" name="q" value="${i + 1}" ${answers[step] === i + 1 ? "checked" : ""}>
+        <span>${opt}</span>
+      </label>
+    `;
   });
 
-  document.getElementById("options").innerHTML=html;
+  document.getElementById("options").innerHTML = html;
 
-  document.querySelectorAll('input[name="q"]').forEach(el=>{
-    el.onclick = ()=>answers[step]=Number(el.value);
+  document.querySelectorAll('input[name="q"]').forEach(el => {
+    el.onclick = () => answers[step] = Number(el.value);
   });
 }
 
 function next(){
-  if(answers[step]==null){ alert("Respondé antes de continuar"); return;}
+  if (answers[step] == null) {
+    alert("Respondé antes de continuar");
+    return;
+  }
 
-  if(step<3){
+  if (step < questions.length - 1) {
     step++;
     load();
   } else {
@@ -302,44 +83,41 @@ function next(){
 }
 
 function prev(){
-  if(step>0){
+  if (step > 0) {
     step--;
     load();
   }
 }
 
 function result(){
-  const total = answers.reduce((a,b)=>a+b,0);
+  const total = answers.reduce((a, b) => a + b, 0);
 
-  let level="", text="";
+  let level = "", text = "";
 
-  if(total<=21){
-    level="Usuario casual";
-    text="Nivel bajo de adicción.";
-  } else if(total<=43){
-    level="Usuario regular";
-    text="Uso frecuente sin indicadores severos.";
-  } else if(total<=64){
-    level="Usuario en riesgo";
-    text="Uso elevado con posibles consecuencias negativas.";
-  } else {
-    level="Usuario problemático";
-    text="Nivel severo de adicción.";
+  if (total >= 21 && total <= 42) {
+    level = "Usuario casual";
+    text = "Nivel bajo de uso problemático.";
+  } else if (total >= 43 && total <= 63) {
+    level = "Usuario regular";
+    text = "Uso frecuente sin indicadores severos.";
+  } else if (total >= 64 && total <= 84) {
+    level = "Usuario en riesgo";
+    text = "Uso elevado con posibles consecuencias negativas.";
+  } else if (total >= 85 && total <= 105) {
+    level = "Usuario problemático";
+    text = "Nivel severo de uso problemático.";
   }
 
-  document.getElementById("score").innerText=`Puntaje: ${total} de 105`;
-  document.getElementById("level").innerText=level;
-  document.getElementById("text").innerText=text;
+  document.getElementById("score").innerText = `Puntaje: ${total} de 105`;
+  document.getElementById("level").innerText = level;
+  document.getElementById("text").innerText = text;
 
   show("result");
 }
 
 function restart(){
-  answers=[null,null,null,null];
+  step = 0;
+  answers = new Array(questions.length).fill(null);
   show("landing");
 }
-
 </script>
-
-</body>
-</html>

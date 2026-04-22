@@ -166,8 +166,8 @@ button {
 
   <div class="box">
     <p style="text-align: center;">
-    A continuación se presentan una serie de afirmaciones sobre tu uso del teléfono celular.<br>
-    Indicá en qué medida estás de acuerdo con cada una, seleccionando la opción que mejor represente tu experiencia personal. <br>
+    A continuación se presentan una serie de afirmaciones sobre tu uso de videojuegos.<br>
+    Indicá en qué medida te ha pasado lo que afirman cada una, seleccionando la opción que mejor represente tu experiencia personal. <br>
     No existen respuestas correctas o incorrectas.</p>
   </div>
 
@@ -203,10 +203,10 @@ button {
       <th>Puntaje</th>
       <th>Clasificación</th>
     </tr>
-    <tr><td>4 – 9</td><td>Usuario casual</td></tr>
-    <tr><td>10 – 15</td><td>Usuario regular</td></tr>
-    <tr><td>16 – 17</td><td>Usuario en riesgo</td></tr>
-    <tr><td>18 – 20</td><td>Usuario problemático</td></tr>
+    <tr><td>21 – 42 </td><td>Usuario casual</td></tr>
+    <tr><td>43 – 63</td><td>Usuario regular</td></tr>
+    <tr><td>64 – 84</td><td>Usuario en riesgo</td></tr>
+    <tr><td>85 – 105</td><td>Usuario problemático</td></tr>
   </table>
 
   <br>
@@ -214,8 +214,7 @@ button {
 </div>
 
 <div class="footer">
-López, J. I., Resett, S., González Caino, P. C., Chausis Carrete, R., Dabbe Sanchez, Z. J., & Sinopoli, D. A. (in press). Propiedades psicométricas de la Escala Breve de Uso Problemático y Dependencia del Smartphone en estudiantes universitarios argentinos.
-<br>Asociación Argentina de Ciencias del Comportamiento (AACC)
+Caino, P. G., & Resett, S. A. (2024). Adicción a los videojuegos, calidad de sueño y malestar psicológico en adolescentes y jóvenes adultos. Revista Argentina de Ciencias del Comportamiento (RACC), 16(3), 86-95.
 </div>
 
 </div>
@@ -223,18 +222,37 @@ López, J. I., Resett, S., González Caino, P. C., Chausis Carrete, R., Dabbe Sa
 <script>
 
 const questions = [
-"Creo estar dependiendo excesivamente de mi teléfono.",
-"No podría vivir ni sobrevivir sin mi teléfono.",
-"No uso mi teléfono de manera adecuada en términos de tiempo y frecuencia.",
-"Mi necesidad de usar el teléfono mientras realizo otra tarea es motivo de preocupación."
+"¿Pensaste en jugar videojuegos todo el día?",
+"¿Pasas mucho tiempo libre jugando videojuegos?",
+" ¿Te has sentido adicto a algún videojuego?",
+"¿Jugaste más tiempo del que pensabas?",
+"¿Pasaste cada vez más tiempo jugando videojuegos?",
+"¿No pudiste parar de jugar una vez que empezaste?",
+"¿Jugaste videojuegos para olvidar la vida real?,
+"¿Jugaste videojuegos para bajar el estrés?",
+"¿Jugaste videojuegos para sentirte mejor?",
+"¿No pudiste reducir tu tiempo de juego?",
+"¿Otras personas han intentado que reduzcas el tiempo que dedicas al juego sin tener resultado?",
+"¿Has fracasado intentando reducir tu tiempo de juego?",
+"¿Te has sentido mal cuando no has podido jugar?",
+"¿Te has sentido enojado cuando no has podido jugar?,
+"¿Te has sentido estresado cuando no has podido jugar?",
+"¿Has tenido peleas con otros (por ejemplo, familia, amigos) debido a estar jugando videojuegos?",
+"¿Has descuidado a otros (por ejemplo, familia, amigos) debido a estar jugando videojuegos?",
+"¿Has mentido sobre el tiempo que pasas jugando videojuegos?",
+"¿Tu tiempo jugando videojuegos te trajo problemas de sueño?",
+"¿Has descuidado otras actividades importantes (por ejemplo, escuela, trabajo, deportes) por jugar videojuegos?",
+"¿Te has sentido mal por jugar por un tiempo prolongado?"
+  
+  
 ];
 
 const options = [
-"Totalmente en desacuerdo",
-"En desacuerdo",
-"Ni de acuerdo ni en desacuerdo",
-"De acuerdo",
-"Totalmente de acuerdo"
+"Nunca",
+"Rara vez",
+"A veces",
+"A menudo",
+"Muy a menudo"
 ];
 
 let step = 0;
@@ -295,21 +313,21 @@ function result(){
 
   let level="", text="";
 
-  if(total<=9){
+  if(total<=21){
     level="Usuario casual";
-    text="Nivel bajo de uso problemático.";
-  } else if(total<=15){
+    text="Nivel bajo de adicción.";
+  } else if(total<=43){
     level="Usuario regular";
     text="Uso frecuente sin indicadores severos.";
-  } else if(total<=17){
+  } else if(total<=64){
     level="Usuario en riesgo";
     text="Uso elevado con posibles consecuencias negativas.";
   } else {
     level="Usuario problemático";
-    text="Nivel severo de uso problemático.";
+    text="Nivel severo de adicción.";
   }
 
-  document.getElementById("score").innerText=`Puntaje: ${total} de 20`;
+  document.getElementById("score").innerText=`Puntaje: ${total} de 105`;
   document.getElementById("level").innerText=level;
   document.getElementById("text").innerText=text;
 

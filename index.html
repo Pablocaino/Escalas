@@ -1,123 +1,354 @@
-<script>
-const questions = [
-"¿Pensaste en jugar videojuegos todo el día?",
-"¿Pasas mucho tiempo libre jugando videojuegos?",
-"¿Te has sentido adicto a algún videojuego?",
-"¿Jugaste más tiempo del que pensabas?",
-"¿Pasaste cada vez más tiempo jugando videojuegos?",
-"¿No pudiste parar de jugar una vez que empezaste?",
-"¿Jugaste videojuegos para olvidar la vida real?",
-"¿Jugaste videojuegos para bajar el estrés?",
-"¿Jugaste videojuegos para sentirte mejor?",
-"¿No pudiste reducir tu tiempo de juego?",
-"¿Otras personas han intentado que reduzcas el tiempo que dedicas al juego sin tener resultado?",
-"¿Has fracasado intentando reducir tu tiempo de juego?",
-"¿Te has sentido mal cuando no has podido jugar?",
-"¿Te has sentido enojado cuando no has podido jugar?",
-"¿Te has sentido estresado cuando no has podido jugar?",
-"¿Has tenido peleas con otros (por ejemplo, familia, amigos) debido a estar jugando videojuegos?",
-"¿Has descuidado a otros (por ejemplo, familia, amigos) debido a estar jugando videojuegos?",
-"¿Has mentido sobre el tiempo que pasas jugando videojuegos?",
-"¿Tu tiempo jugando videojuegos te trajo problemas de sueño?",
-"¿Has descuidado otras actividades importantes (por ejemplo, escuela, trabajo, deportes) por jugar videojuegos?",
-"¿Te has sentido mal por jugar por un tiempo prolongado?"
-];
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escala de Adicción a los Videojuegos</title>
 
-const options = [
-"Nunca",
-"Rara vez",
-"A veces",
-"A menudo",
-"Muy a menudo"
-];
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
 
-let step = 0;
-let answers = new Array(questions.length).fill(null);
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
 
-function show(id){
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 720px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
 
-function start(){
-  step = 0;
-  answers = new Array(questions.length).fill(null);
-  show("quiz");
-  load();
-}
+    .screen { display: none; }
+    .screen.active { display: block; }
 
-function load(){
-  document.getElementById("question").innerText = questions[step];
-  document.getElementById("progressText").innerText = `Pregunta ${step + 1} de ${questions.length}`;
-  document.getElementById("progressFill").style.width = `${((step + 1) / questions.length) * 100}%`;
+    h1, h2, h3 {
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      color: #1f2937;
+    }
 
-  let html = "";
-  options.forEach((opt, i) => {
-    html += `
-      <label class="option">
-        <input type="radio" name="q" value="${i + 1}" ${answers[step] === i + 1 ? "checked" : ""}>
-        <span>${opt}</span>
-      </label>
-    `;
-  });
+    .box {
+      background: #f8fbff;
+      border: 1px solid #e3e8f0;
+      padding: 22px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
 
-  document.getElementById("options").innerHTML = html;
+    .center { text-align: center; }
 
-  document.querySelectorAll('input[name="q"]').forEach(el => {
-    el.onclick = () => answers[step] = Number(el.value);
-  });
-}
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 22px;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.2s ease;
+    }
 
-function next(){
-  if (answers[step] == null) {
-    alert("Respondé antes de continuar");
-    return;
-  }
+    .primary {
+      background: #1e40af;
+      color: white;
+    }
 
-  if (step < questions.length - 1) {
-    step++;
-    load();
-  } else {
-    result();
-  }
-}
+    .primary:hover {
+      background: #1e3a8a;
+    }
 
-function prev(){
-  if (step > 0) {
-    step--;
-    load();
-  }
-}
+    .secondary {
+      background: #eef2f7;
+    }
 
-function result(){
-  const total = answers.reduce((a, b) => a + b, 0);
+    .secondary:hover {
+      background: #e5e7eb;
+    }
 
-  let level = "", text = "";
+    .progress {
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
 
-  if (total >= 21 && total <= 42) {
-    level = "Usuario casual";
-    text = "Nivel bajo de uso problemático.";
-  } else if (total >= 43 && total <= 63) {
-    level = "Usuario regular";
-    text = "Uso frecuente sin indicadores severos.";
-  } else if (total >= 64 && total <= 84) {
-    level = "Usuario en riesgo";
-    text = "Uso elevado con posibles consecuencias negativas.";
-  } else if (total >= 85 && total <= 105) {
-    level = "Usuario problemático";
-    text = "Nivel severo de uso problemático.";
-  }
+    .progress-fill {
+      height: 100%;
+      background: #1e40af;
+      width: 0%;
+      transition: width 0.2s ease;
+    }
 
-  document.getElementById("score").innerText = `Puntaje: ${total} de 105`;
-  document.getElementById("level").innerText = level;
-  document.getElementById("text").innerText = text;
+    .question {
+      text-align: center;
+      font-size: 1.2rem;
+      margin: 25px 0;
+      font-weight: 500;
+    }
 
-  show("result");
-}
+    .option {
+      display: block;
+      border: 1px solid #e5e7eb;
+      padding: 14px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-function restart(){
-  step = 0;
-  answers = new Array(questions.length).fill(null);
-  show("landing");
-}
-</script>
+    .option:hover {
+      background: #f1f5f9;
+    }
+
+    .option input { display: none; }
+
+    .option.selected {
+      border-color: #1e40af;
+      background: #eff6ff;
+      font-weight: 600;
+      color: #1e40af;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .result {
+      text-align: center;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+
+    .table th, .table td {
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .table th {
+      background: #f1f5f9;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #6b7280;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+
+    <div id="landing" class="screen active">
+      <h1>Escala de Adicción a los Videojuegos</h1>
+
+      <div class="box">
+        <p style="text-align: center;">
+          A continuación se presentan una serie de afirmaciones sobre tu uso de videojuegos.<br>
+          Indicá en qué medida te ha pasado lo que afirma cada una, seleccionando la opción que mejor represente tu experiencia personal.<br>
+          No existen respuestas correctas o incorrectas.
+        </p>
+      </div>
+
+      <div class="center">
+        <button class="primary" onclick="start()">Hacer evaluación</button>
+      </div>
+    </div>
+
+    <div id="quiz" class="screen">
+      <div id="progressText"></div>
+      <div class="progress">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div id="question" class="question"></div>
+      <div id="options"></div>
+
+      <div class="nav">
+        <button class="secondary" onclick="prev()">Atrás</button>
+        <button class="primary" onclick="next()">Siguiente</button>
+      </div>
+    </div>
+
+    <div id="result" class="screen result">
+      <h2 id="score"></h2>
+      <h3 id="level"></h3>
+      <p id="text"></p>
+
+      <table class="table">
+        <tr>
+          <th>Puntaje</th>
+          <th>Clasificación</th>
+        </tr>
+        <tr><td>21 – 42</td><td>Usuario casual</td></tr>
+        <tr><td>43 – 63</td><td>Usuario regular</td></tr>
+        <tr><td>64 – 84</td><td>Usuario en riesgo</td></tr>
+        <tr><td>85 – 105</td><td>Usuario problemático</td></tr>
+      </table>
+
+      <br>
+      <button class="primary" onclick="restart()">Volver al inicio</button>
+    </div>
+
+    <div class="footer">
+      Caino, P. G., & Resett, S. A. (2024). Adicción a los videojuegos, calidad de sueño y malestar psicológico en adolescentes y jóvenes adultos. Revista Argentina de Ciencias del Comportamiento (RACC), 16(3), 86-95.
+    </div>
+
+  </div>
+
+  <script>
+    const questions = [
+      "¿Pensaste en jugar videojuegos todo el día?",
+      "¿Pasás mucho tiempo libre jugando videojuegos?",
+      "¿Te has sentido adicto a algún videojuego?",
+      "¿Jugaste más tiempo del que pensabas?",
+      "¿Pasaste cada vez más tiempo jugando videojuegos?",
+      "¿No pudiste parar de jugar una vez que empezaste?",
+      "¿Jugaste videojuegos para olvidar la vida real?",
+      "¿Jugaste videojuegos para bajar el estrés?",
+      "¿Jugaste videojuegos para sentirte mejor?",
+      "¿No pudiste reducir tu tiempo de juego?",
+      "¿Otras personas han intentado que reduzcas el tiempo que dedicás al juego sin tener resultado?",
+      "¿Has fracasado intentando reducir tu tiempo de juego?",
+      "¿Te has sentido mal cuando no has podido jugar?",
+      "¿Te has sentido enojado cuando no has podido jugar?",
+      "¿Te has sentido estresado cuando no has podido jugar?",
+      "¿Has tenido peleas con otros (por ejemplo, familia, amigos) debido a estar jugando videojuegos?",
+      "¿Has descuidado a otros (por ejemplo, familia, amigos) debido a estar jugando videojuegos?",
+      "¿Has mentido sobre el tiempo que pasás jugando videojuegos?",
+      "¿Tu tiempo jugando videojuegos te trajo problemas de sueño?",
+      "¿Has descuidado otras actividades importantes (por ejemplo, escuela, trabajo, deportes) por jugar videojuegos?",
+      "¿Te has sentido mal por jugar por un tiempo prolongado?"
+    ];
+
+    const options = [
+      "Nunca",
+      "Rara vez",
+      "A veces",
+      "A menudo",
+      "Muy a menudo"
+    ];
+
+    let step = 0;
+    let answers = new Array(questions.length).fill(null);
+
+    function show(id) {
+      document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function start() {
+      step = 0;
+      answers = new Array(questions.length).fill(null);
+      show("quiz");
+      load();
+    }
+
+    function load() {
+      document.getElementById("question").innerText = questions[step];
+      document.getElementById("progressText").innerText = `Pregunta ${step + 1} de ${questions.length}`;
+      document.getElementById("progressFill").style.width = `${((step + 1) / questions.length) * 100}%`;
+
+      let html = "";
+      options.forEach((opt, i) => {
+        const checked = answers[step] === i + 1 ? "checked" : "";
+        const selected = answers[step] === i + 1 ? "selected" : "";
+        html += `
+          <label class="option ${selected}">
+            <input type="radio" name="q" value="${i + 1}" ${checked}>
+            <span>${opt}</span>
+          </label>
+        `;
+      });
+
+      document.getElementById("options").innerHTML = html;
+
+      document.querySelectorAll('input[name="q"]').forEach(el => {
+        el.addEventListener("change", () => {
+          answers[step] = Number(el.value);
+          load();
+        });
+      });
+    }
+
+    function next() {
+      if (answers[step] == null) {
+        alert("Respondé antes de continuar");
+        return;
+      }
+
+      if (step < questions.length - 1) {
+        step++;
+        load();
+      } else {
+        result();
+      }
+    }
+
+    function prev() {
+      if (step > 0) {
+        step--;
+        load();
+      }
+    }
+
+    function result() {
+      const total = answers.reduce((a, b) => a + b, 0);
+
+      let level = "";
+      let text = "";
+
+      if (total >= 21 && total <= 42) {
+        level = "Usuario casual";
+        text = "Nivel bajo de uso problemático.";
+      } else if (total >= 43 && total <= 63) {
+        level = "Usuario regular";
+        text = "Uso frecuente sin indicadores severos.";
+      } else if (total >= 64 && total <= 84) {
+        level = "Usuario en riesgo";
+        text = "Uso elevado con posibles consecuencias negativas.";
+      } else if (total >= 85 && total <= 105) {
+        level = "Usuario problemático";
+        text = "Nivel severo de uso problemático.";
+      } else {
+        level = "Resultado inválido";
+        text = "Hubo un problema en el cálculo del puntaje.";
+      }
+
+      document.getElementById("score").innerText = `Puntaje: ${total} de 105`;
+      document.getElementById("level").innerText = level;
+      document.getElementById("text").innerText = text;
+
+      show("result");
+    }
+
+    function restart() {
+      step = 0;
+      answers = new Array(questions.length).fill(null);
+      show("landing");
+    }
+  </script>
+</body>
+</html>
